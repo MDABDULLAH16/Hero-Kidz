@@ -3,25 +3,29 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
  
 
 const Login = () => {
-    
-
+    const {register,handleSubmit,}=useForm()
+const onSubmit = (data) => {
+    console.log(data);
+}
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="text-3xl font-bold text-center mb-6">Welcome Back</h2>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email Address</span>
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaEnvelope className="text-gray-400" />
-                <input
+                              <input
+                    {...register('email')}
                   type="email"
                   placeholder="email@example.com"
                   className="grow"
@@ -36,7 +40,8 @@ const Login = () => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaLock className="text-gray-400" />
-                <input
+                              <input
+                    {...register('password')}
                   type="password"
                   placeholder="••••••••"
                   className="grow"

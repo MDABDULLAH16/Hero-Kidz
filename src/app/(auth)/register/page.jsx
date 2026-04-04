@@ -1,9 +1,22 @@
+'use client';
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { postUser } from "@/actions/server/auth";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+    const router = useRouter()
+    const {register,handleSubmit,}=useForm()
+const onSubmit =async (data) => {
+    const result = await postUser(data)
+    if (result.insertedId) {
+        alert('User registered successfully!');
+        router.push('/login')
+    }
+}
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
@@ -12,14 +25,15 @@ const Register = () => {
             Create Account
           </h2>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Full Name</span>
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaUser className="text-gray-400" />
-                <input
+                              <input
+                    {...register('name')}
                   type="text"
                   placeholder="John Doe"
                   className="grow"
@@ -34,7 +48,8 @@ const Register = () => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaEnvelope className="text-gray-400" />
-                <input
+                              <input
+                    {...register('email')}
                   type="email"
                   placeholder="name@company.com"
                   className="grow"
@@ -49,7 +64,8 @@ const Register = () => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaLock className="text-gray-400" />
-                <input
+                              <input
+                    {...register('password')}
                   type="password"
                   placeholder="••••••••"
                   className="grow"
