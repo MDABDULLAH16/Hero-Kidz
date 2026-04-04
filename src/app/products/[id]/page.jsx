@@ -1,29 +1,10 @@
-"use client";
+import { getProductById } from "@/actions/server/products";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { FaStar, FaShoppingCart, FaBolt } from "react-icons/fa";
-import productData from "../../data/toys.json";
-import ProductDetailsSkeleton from "@/components/home/ProductCard/ProductDetailsSkeleton";
 
-const ProductDetails = () => {
-  const { id } = useParams();
-  console.log(id);
-  const decodedId = decodeURIComponent(id)
-
-  const [loading, setLoading] = useState(true);
-  const product = productData.find((p) => p.title === decodedId);
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) return <ProductDetailsSkeleton />;
+const ProductDetails = async ({ params }) => {
+  const { id } = await params;
+  const product = (await getProductById(id)) || {};
 
   const {
     title,
@@ -38,7 +19,7 @@ const ProductDetails = () => {
     info,
     qna,
   } = product;
-  console.log("producdetails", product);
+  // console.log("producdetails", product);
 
   const discountedPrice = Math.round(price - (price * discount) / 100);
 
@@ -47,10 +28,10 @@ const ProductDetails = () => {
       {/* Image */}
       <div className="bg-base-100 shadow rounded-xl p-4">
         <Image
-          src={image}
+          src={image || "https://i.ibb.co.com/XZxk7JH8/logo.webp"}
           width={500}
           height={500}
-          alt={title}
+          alt={title || "product"}
           className="w-full object-cover rounded-lg"
         />
       </div>
@@ -101,7 +82,7 @@ const ProductDetails = () => {
           <h3 className="font-semibold mb-2">Product Highlights</h3>
 
           <ul className="list-disc ml-5 space-y-1 text-sm">
-            {info.map((item, i) => (
+            {info?.map((item, i) => (
               <li key={i}>{item}</li>
             ))}
           </ul>
@@ -120,7 +101,7 @@ const ProductDetails = () => {
         <h2 className="text-xl font-semibold mb-4">Questions & Answers</h2>
 
         <div className="space-y-4">
-          {qna.map((item, i) => (
+          {qna?.map((item, i) => (
             <div key={i} className="border-b pb-3">
               <p className="font-medium">❓ {item.question}</p>
 

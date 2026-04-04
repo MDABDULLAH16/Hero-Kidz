@@ -1,28 +1,23 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import productData from '../../../../app/data/toys.json'
-import ProductCard from '../../ProductCard/ProductCard';
-import ProductCardSkeleton from '../../ProductCard/ProductCardSkeleton';
+ 
+import React from "react";
+import { getProducts } from "@/actions/server/products";
+import ProductCard from "../../ProductCard/ProductCard";
 
-const Products = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const Products = async () => {
+  const products = await getProducts();
 
-  useEffect(() => {
-  setTimeout(()=>{
-    setProducts(productData);
-    setLoading(false);},1500)
-  },[])
-
-    return (
+  return (
+    <div className=" "  >
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Featured Products</h2>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-        {loading?Array(8).fill(0).map((_, index) => (
-          <ProductCardSkeleton key={index} />
-        )):products.map(product => (
-          <ProductCard key={product.id} product={product} />
+        {products.map((product) => (
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
-    );
+  </div>
+  );
 };
 
 export default Products;

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { FaStar, FaShoppingCart, FaEye } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
-  const { title, image, price, discount, ratings, sold } = product;
+  const { title, image, price, discount, ratings, sold,_id } = product;
+console.log(product);
 
   const discountedPrice = Math.round(price - (price * discount) / 100);
 
@@ -61,7 +62,7 @@ const ProductCard = ({ product }) => {
         {/* Buttons */}
         <div className="flex gap-2 pt-2">
           <Link title="See details"
-            href={`/products/${title}`}
+            href={`/products/${_id}`}
             className="btn btn-outline btn-sm flex-1"
           >
             <FaEye />
