@@ -1,20 +1,33 @@
-"use client";
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
- 
 
-const Login = () => {
-    
-
+const Register = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="text-3xl font-bold text-center mb-6">Welcome Back</h2>
+          <h2 className="text-3xl font-bold text-center mb-6">
+            Create Account
+          </h2>
 
           <form className="space-y-4">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Full Name</span>
+              </label>
+              <div className="input input-bordered flex items-center gap-3">
+                <FaUser className="text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="grow"
+                  required
+                />
+              </div>
+            </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email Address</span>
@@ -23,7 +36,7 @@ const Login = () => {
                 <FaEnvelope className="text-gray-400" />
                 <input
                   type="email"
-                  placeholder="email@example.com"
+                  placeholder="name@company.com"
                   className="grow"
                   required
                 />
@@ -43,17 +56,10 @@ const Login = () => {
                   required
                 />
               </div>
-              <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
-                  Forgot password?
-                </a>
-              </label>
             </div>
 
             <div className="form-control mt-6">
-              <button   className="btn btn-primary w-full">
-                Login
-              </button>
+              <button className="btn btn-primary w-full">Sign Up</button>
             </div>
           </form>
 
@@ -61,16 +67,16 @@ const Login = () => {
 
           <button className="btn btn-outline flex items-center gap-2 w-full border-gray-300">
             <FcGoogle className="text-xl" />
-            Sign in with Google
+            Sign up with Google
           </button>
 
           <p className="text-center mt-6 text-sm">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/register"
+              href="/login"
               className="text-primary font-semibold hover:underline"
             >
-              Register here
+              Login here
             </Link>
           </p>
         </div>
@@ -79,4 +85,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

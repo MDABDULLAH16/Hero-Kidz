@@ -1,9 +1,66 @@
 import { getProductById } from "@/actions/server/products";
+import CartButton from "@/components/buttons/CartButton";
 import Image from "next/image";
 import { FaStar, FaShoppingCart, FaBolt } from "react-icons/fa";
 
-const ProductDetails = async ({ params }) => {
+export async function generateMetadata({ params }) {
   const { id } = await params;
+
+  const product = (await getProductById(id)) || {};
+
+  const { title, description, image, price, discount } = product;
+
+  const discountedPrice =
+    price && discount ? Math.round(price - (price * discount) / 100) : price;
+
+  return {
+    title: title || "Product Details",
+    description:
+      description?.slice(0, 150) ||
+      "Explore amazing toys for kids at HeroKidz.",
+
+    openGraph: {
+      title: title,
+      description: description?.slice(0, 150),
+      images: [
+        {
+          url: image || "https://i.ibb.co.com/XZxk7JH8/logo.webp",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      type: "website",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: description?.slice(0, 150),
+      images: [image || "https://i.ibb.co.com/XZxk7JH8/logo.webp"],
+    },
+
+    alternates: {
+      canonical: `https://herokidz-sage.vercel.app/products/${id}`,
+    },
+
+    keywords: [
+      title,
+      "kids toys",
+      "HeroKidz",
+      "buy toys online",
+      "educational toys",
+    ],
+
+    other: {
+      "product:price:amount": discountedPrice,
+      "product:price:currency": "BDT",
+    },
+  };
+}
+
+const ProductDetails = async ({ params }) => {
+  const { id } =await  params;
   const product = (await getProductById(id)) || {};
 
   const {
@@ -66,10 +123,7 @@ const ProductDetails = async ({ params }) => {
 
         {/* Buttons */}
         <div className="flex gap-3">
-          <button className="btn btn-primary flex-1">
-            <FaShoppingCart />
-            Add to Cart
-          </button>
+          <CartButton product={product} />
 
           <button className="btn btn-secondary flex-1">
             <FaBolt />

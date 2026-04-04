@@ -3,10 +3,13 @@ import ProductCard from "@/components/home/ProductCard/ProductCard";
 import { getProducts } from "@/actions/server/products";
 
 export const metadata = {
-  title: "All Products",
-   
+  title: "All Products - HeroKidz",
   description:
-    "Best toy store in Bangladesh. We provide a wide range of toys for kids of all ages. Our toys are made of high-quality materials and are safe for children. We also offer free shipping on all orders over $50.",
+    "Browse a wide range of toys for kids at HeroKidz. Educational, fun, and safe toys for all ages.",
+  openGraph: {
+    title: "HeroKidz Toys Collection",
+    images: ["https://i.ibb.co.com/Kz814wYP/image.png"],
+  },
 };
 const Products = async () => {
   const productDataFromServer = await getProducts();

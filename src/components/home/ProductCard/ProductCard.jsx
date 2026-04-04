@@ -1,18 +1,13 @@
 "use client";
+import CartButton from "@/components/buttons/CartButton";
 import Image from "next/image";
 import Link from "next/link";
-import { FaStar, FaShoppingCart, FaEye } from "react-icons/fa";
+import { FaStar, FaEye } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
-  const { title, image, price, discount, ratings, sold,_id } = product;
-console.log(product);
+  const { title, image, price, discount, ratings, sold, _id } = product;
 
   const discountedPrice = Math.round(price - (price * discount) / 100);
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    console.log("Added to cart:", product);
-  };
 
   return (
     <div className="card bg-base-100 shadow-md hover:shadow-xl transition duration-300">
@@ -61,18 +56,14 @@ console.log(product);
 
         {/* Buttons */}
         <div className="flex gap-2 pt-2">
-          <Link title="See details"
+          <Link
+            title="See details"
             href={`/products/${_id}`}
             className="btn btn-outline btn-sm flex-1"
           >
             <FaEye />
           </Link>
-          <button title="Add To Cart"
-            onClick={handleAddToCart}
-            className="btn btn-primary btn-sm flex-1"
-          >
-            <FaShoppingCart />
-          </button>
+          <CartButton product={product} />
         </div>
       </div>
     </div>

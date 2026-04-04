@@ -13,8 +13,12 @@ export const getProducts = async () => {
 };
 
 export const getProductById = async (_id) => {
+
+  if(!ObjectId.isValid(_id)) {
+    return null;
+  }
     const product = await dbConnection(collections.PRODUCTS).findOne({ _id: new ObjectId(_id) });
-    console.log('product',product);
+     const singleProduct = JSON.parse(JSON.stringify(product));
     
-    return JSON.parse(JSON.stringify(product));
+    return {...singleProduct, _id: singleProduct._id.toString()};
 };
