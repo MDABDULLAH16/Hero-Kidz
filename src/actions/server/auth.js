@@ -20,7 +20,8 @@ export const postUser = async (payload) => {
       name,
       email,
       password: await bcrypt.hash(password, 14),
-      role: "user",
+        role: "user",
+      createdAt: new Date().toISOString(),
     };
     const result = await dbConnection(collections.USERS).insertOne(user);
     //  return user data
@@ -30,6 +31,24 @@ export const postUser = async (payload) => {
             insertedId: result.insertedId.toString(),
         };
     }
- }
+}
+ 
+export const loginUser =async (payload) => {
+    const { email, password } = payload;
+    console.log('payload action',payload);
+    
+    //checking payload
+    if (!email || !password) return null;
+    //checking if user exists
+    const user = await dbConnection(collections.USERS).findOne({ email });
+    console.log('user',user);
+    
+    if (!user) return null;
+    //checking password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) return JSON.parse(JSON.stringify(user));
+    return null;
+     
+}
   
  

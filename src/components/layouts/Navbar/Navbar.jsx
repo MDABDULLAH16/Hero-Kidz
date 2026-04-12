@@ -1,3 +1,4 @@
+import AuthButton from '@/components/buttons/AuthButton';
 import Logo from '@/components/buttons/Logo/Logo';
 import NavLink from '@/components/buttons/NavLink';
 import Link from 'next/link';
@@ -53,7 +54,7 @@ const Navbar = () => {
           </div>
                 <div className="navbar-end gap-3">
                     <Link className='btn btn-primary text-xl space-x-4' href="/cart"><FiShoppingCart /> </Link>
-            <Link href='/login' className="btn btn-primary btn-outline">Login</Link>
+          <AuthButton></AuthButton>
           </div>
         </div>
       </div>

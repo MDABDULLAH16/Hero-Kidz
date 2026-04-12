@@ -4,13 +4,39 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
- 
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const Login = () => {
-    const {register,handleSubmit,}=useForm()
-const onSubmit = (data) => {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm();
+  const onSubmit = async (data) => {
     console.log(data);
-}
+    
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+   
+    });
+    if (result.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: "You have been logged in successfully!",
+      });
+      router.push("/");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: "Invalid email or password. Please try again.",
+      });
+    }
+
+    
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
@@ -24,8 +50,8 @@ const onSubmit = (data) => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaEnvelope className="text-gray-400" />
-                              <input
-                    {...register('email')}
+                <input
+                  {...register("email")}
                   type="email"
                   placeholder="email@example.com"
                   className="grow"
@@ -40,8 +66,8 @@ const onSubmit = (data) => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaLock className="text-gray-400" />
-                              <input
-                    {...register('password')}
+                <input
+                  {...register("password")}
                   type="password"
                   placeholder="••••••••"
                   className="grow"
@@ -56,9 +82,7 @@ const onSubmit = (data) => {
             </div>
 
             <div className="form-control mt-6">
-              <button   className="btn btn-primary w-full">
-                Login
-              </button>
+              <button className="btn btn-primary w-full">Login</button>
             </div>
           </form>
 
