@@ -5,11 +5,13 @@ import { FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
+import GoogleSignIn from "@/components/buttons/GoogleSignIn";
 
 const Login = () => {
-  const router = useRouter();
+  const params = useSearchParams();
+  const callbackUrl = params.get('callbackUrl') || '/';
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
     console.log(data);
@@ -17,7 +19,7 @@ const Login = () => {
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      redirect: false,
+      callbackUrl:callbackUrl
    
     });
     if (result.ok) {
@@ -26,7 +28,7 @@ const Login = () => {
         title: "Login Successful",
         text: "You have been logged in successfully!",
       });
-      router.push("/");
+ 
     } else {
       Swal.fire({
         icon: "error",
@@ -88,15 +90,12 @@ const Login = () => {
 
           <div className="divider">OR</div>
 
-          <button className="btn btn-outline flex items-center gap-2 w-full border-gray-300">
-            <FcGoogle className="text-xl" />
-            Sign in with Google
-          </button>
+         <GoogleSignIn></GoogleSignIn>
 
           <p className="text-center mt-6 text-sm">
             Don't have an account?{" "}
             <Link
-              href="/register"
+              href={`/register?callbackUrl=${callbackUrl}`}
               className="text-primary font-semibold hover:underline"
             >
               Register here

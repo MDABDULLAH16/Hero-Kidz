@@ -5,16 +5,21 @@ import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { postUser } from "@/actions/server/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Swal from "sweetalert2";
 
 const Register = () => {
-    const router = useRouter()
+  const params = useSearchParams();
+  const callbackUrl = params.get('callbackUrl') || '/';
     const {register,handleSubmit,}=useForm()
 const onSubmit =async (data) => {
     const result = await postUser(data)
     if (result.insertedId) {
-        alert('User registered successfully!');
-        router.push('/login')
+        Swal.fire({
+            icon: "success",
+            title: "Registration Successful",
+            text: "You have been registered successfully!",
+        });
     }
 }
   return (
