@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { postUser } from "@/actions/server/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
+import GoogleSignIn from "@/components/buttons/GoogleSignIn";
 
 const Register = () => {
   const params = useSearchParams();
@@ -20,6 +21,7 @@ const onSubmit =async (data) => {
             title: "Registration Successful",
             text: "You have been registered successfully!",
         });
+      
     }
 }
   return (
@@ -86,10 +88,7 @@ const onSubmit =async (data) => {
 
           <div className="divider">OR</div>
 
-          <button className="btn btn-outline flex items-center gap-2 w-full border-gray-300">
-            <FcGoogle className="text-xl" />
-            Sign up with Google
-          </button>
+         <GoogleSignIn></GoogleSignIn>
 
           <p className="text-center mt-6 text-sm">
             Already have an account?{" "}
