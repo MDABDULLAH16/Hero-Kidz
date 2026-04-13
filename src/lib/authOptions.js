@@ -27,7 +27,9 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       // console.log({ user, account, email, profile, credentials });
-      const isUserExist = await dbConnection(collections.USERS).findOne({ email: user.email, provider: account.provider });
+      const isUserExist = await dbConnection(collections.USERS).findOne({
+        email: user.email,
+      });
       if (!isUserExist) {
         const newUser = {
           provider: account.provider,
@@ -41,14 +43,29 @@ export const authOptions = {
       }
       return true;
     },
-  }
-    // async redirect({ url, baseUrl }) {
-    //   return baseUrl
-    // },
-    // async session({ session, user, token }) {
-    //   return session
-    // },
-    // async jwt({ token, user, account, profile, isNewUser }) {
-    //   return token
-    // }
+    async session({ session, user, token }) {
+      if (token) {
+        session.role = token?.role || "user";
+        session.email = token?.email;
+      }
+      return session;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      // console.log('jwts',token,user,account);
+      
+      if (user) {
+        if (account?.provider === "google") {
+          const dbUser = await dbConnection(collections.USERS).findOne({
+            email: user.email,
+          });
+          token.role = dbUser?.role  ;
+          token.email = dbUser?.email;
+        } else {
+          token.role = user?.role ;
+          token.email = user?.email;
+        }
+      }
+      return token;
+    },
+  },
 };

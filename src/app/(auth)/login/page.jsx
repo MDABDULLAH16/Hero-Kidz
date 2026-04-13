@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import GoogleSignIn from "@/components/buttons/GoogleSignIn";
 
 const Login = () => {
+  const router = useRouter();
   const params = useSearchParams();
   const callbackUrl = params.get('callbackUrl') || '/';
   const { register, handleSubmit } = useForm();
@@ -19,7 +20,7 @@ const Login = () => {
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      callbackUrl:callbackUrl
+   redirect: false,
    
     });
     if (result.ok) {
@@ -28,6 +29,7 @@ const Login = () => {
         title: "Login Successful",
         text: "You have been logged in successfully!",
       });
+router.push(callbackUrl)
  
     } else {
       Swal.fire({

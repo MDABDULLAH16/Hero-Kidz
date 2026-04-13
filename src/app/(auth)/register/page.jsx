@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
@@ -8,22 +8,34 @@ import { postUser } from "@/actions/server/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
 import GoogleSignIn from "@/components/buttons/GoogleSignIn";
+import { signIn } from "next-auth/react";
 
 const Register = () => {
+  const router = useRouter();
   const params = useSearchParams();
-  const callbackUrl = params.get('callbackUrl') || '/';
-    const {register,handleSubmit,}=useForm()
-const onSubmit =async (data) => {
-    const result = await postUser(data)
+  const callbackUrl = params.get("callbackUrl") || "/";
+  const { register, handleSubmit } = useForm();
+  const onSubmit = async (data) => {
+    const result = await postUser(data);
     if (result.insertedId) {
-        Swal.fire({
-            icon: "success",
-            title: "Registration Successful",
-            text: "You have been registered successfully!",
-        });
-      
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        text: "You have been registered successfully!",
+      });
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+      });
+      router.push(callbackUrl);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: "An error occurred during registration. Please try again / try Google sign-in.",
+      });
     }
-}
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
@@ -39,8 +51,8 @@ const onSubmit =async (data) => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaUser className="text-gray-400" />
-                              <input
-                    {...register('name')}
+                <input
+                  {...register("name")}
                   type="text"
                   placeholder="John Doe"
                   className="grow"
@@ -55,8 +67,8 @@ const onSubmit =async (data) => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaEnvelope className="text-gray-400" />
-                              <input
-                    {...register('email')}
+                <input
+                  {...register("email")}
                   type="email"
                   placeholder="name@company.com"
                   className="grow"
@@ -71,8 +83,8 @@ const onSubmit =async (data) => {
               </label>
               <div className="input input-bordered flex items-center gap-3">
                 <FaLock className="text-gray-400" />
-                              <input
-                    {...register('password')}
+                <input
+                  {...register("password")}
                   type="password"
                   placeholder="••••••••"
                   className="grow"
@@ -88,7 +100,7 @@ const onSubmit =async (data) => {
 
           <div className="divider">OR</div>
 
-         <GoogleSignIn></GoogleSignIn>
+          <GoogleSignIn></GoogleSignIn>
 
           <p className="text-center mt-6 text-sm">
             Already have an account?{" "}
