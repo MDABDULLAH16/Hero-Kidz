@@ -18,7 +18,7 @@ const ProductCard = ({ product }) => {
           alt={title}
           width={400}
           height={300}
-          className="w-full h-[220px] object-cover"
+          className="w-full h-55 object-cover"
         />
 
         {discount > 0 && (

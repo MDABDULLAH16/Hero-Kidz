@@ -11,6 +11,7 @@ const Navbar = () => {
     <li><NavLink href="/products">Products</NavLink></li>
     <li><NavLink href="/about">About</NavLink></li>
     <li><NavLink href="/contact">Contact</NavLink></li>
+    <li><NavLink href="/cart">Cart</NavLink></li>
     </>
     return (
       <div>
