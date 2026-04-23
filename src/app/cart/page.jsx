@@ -7,7 +7,7 @@ const CartPage = async () => {
 
   return (
     <div>
-      <CartClient cartItems={cart} />
+      <CartClient  cartItems={cart} />
     </div>
   );
 };
