@@ -18,6 +18,13 @@ export const createOrder = async (orderData) => {
     return { success: false, message: "Cart is empty" };
   }
 
+  // const products = cart.map((item) => ({
+  //   productId: item.productId,
+  //   title: item.title,
+  //   price: item.price,
+  //   quantity: item.quantity,
+  // }))
+
   const email = user?.user?.email;
   const customerName = user?.user?.name || "Valued Customer";
 
